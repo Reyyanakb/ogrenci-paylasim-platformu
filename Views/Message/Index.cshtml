@@ -1,0 +1,43 @@
+@model List<mvcFinal2.Models.AppUser>
+
+@{
+    ViewData["Title"] = "Mesajlarım";
+}
+
+<div class="container section-padding">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4 fw-bold">Mesajlarım</h2>
+            <div class="card-custom">
+                @if (Model.Any())
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var user in Model)
+                        {
+                            <a href="/Message/Chat?receiverId=@user.Id" class="list-group-item list-group-item-action p-4 border-bottom d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle me-3" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-person-fill text-warning fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">@user.FullName</h6>
+                                        <small class="text-muted">@user.University</small>
+                                    </div>
+                                </div>
+                                <i class="bi bi-chevron-right text-muted"></i>
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center p-5">
+                        <i class="bi bi-chat-left-text text-muted display-4 mb-3"></i>
+                        <p class="text-muted">Henüz hiç mesajlaşmanız bulunmuyor.</p>
+                        <a href="/Listings" class="btn btn-outline-primary btn-sm rounded-pill">İlanlara Göz At</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

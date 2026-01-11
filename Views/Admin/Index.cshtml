@@ -1,0 +1,87 @@
+@model mvcFinal2.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Yönetici Paneli";
+}
+
+<div class="container section-padding">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Yönetici Paneli</h2>
+            <p class="text-muted">İlanları buradan yönetebilirsiniz.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-danger">Çıkış Yap</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Complaints Section (Embedded) -->
+
+
+        <!-- Listings Section -->
+        <div class="col-12">
+            <div class="card-custom p-4 h-100">
+                <h5 class="fw-bold mb-4">Onay Bekleyen & Aktif İlanlar</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Görsel</th>
+                                <th>İlan</th>
+                                <th>Durum</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Listings)
+                            {
+                                <tr class="@(item.IsSuspended ? "table-danger" : (!item.IsApproved ? "table-warning" : ""))">
+                                    <td>
+                                        <img src="@item.ImageUrl" class="rounded" alt="" style="width: 40px; height: 40px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-truncate" style="max-width: 150px;">@item.Title</div>
+                                        <small class="text-muted">@item.User?.FullName</small>
+                                    </td>
+                                    <td>
+                                        @if (item.IsSuspended)
+                                        {
+                                            <span class="badge bg-danger">Askıda</span>
+                                        }
+                                        else if (item.IsApproved)
+                                        {
+                                            <span class="badge bg-success">Yayında</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Bekliyor</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="/Listings/Details/@item.Id" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
+                                            
+                                            @if (!item.IsApproved && !item.IsSuspended)
+                                            {
+                                                <form asp-action="Approve" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-success mx-1"><i class="bi bi-check-lg"></i></button>
+                                                </form>
+                                            }
+                                            
+                                            <form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğine emin misin?');">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

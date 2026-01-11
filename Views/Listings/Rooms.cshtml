@@ -1,0 +1,103 @@
+@model IEnumerable<mvcFinal2.Models.Listing>
+
+@{
+    ViewData["Title"] = "Oda İlanları";
+}
+
+<div class="container section-padding">
+    <div class="row">
+        <!-- Filter Panel -->
+        <div class="col-md-3 mb-4">
+            <div class="card-custom p-4">
+                <h5 class="fw-bold mb-3">Filtrele</h5>
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Şehir</label>
+                        <select class="form-select form-control-custom">
+                            <option>Tümü</option>
+                            <option>İstanbul</option>
+                            <option>Ankara</option>
+                            <option>İzmir</option>
+                            <option>Bursa</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Üniversite</label>
+                        <select class="form-select form-control-custom">
+                            <option>Tümü</option>
+                            <option>İTÜ</option>
+                            <option>ODTÜ</option>
+                            <option>YTÜ</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Konaklama Tipi</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filterHouse">
+                            <label class="form-check-label small" for="filterHouse">Öğrenci Evi</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filterDorm">
+                            <label class="form-check-label small" for="filterDorm">KYK Yurdu (Devir)</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary-custom w-100 btn-sm">Uygula</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Listings List -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold">Oda İlanları</h3>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle btn-sm" type="button" data-bs-toggle="dropdown">
+                        Sıralama: Yeniden Eskiye
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Fiyata Göre Artan</a></li>
+                        <li><a class="dropdown-item" href="#">Fiyata Göre Azalan</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card-custom h-100 d-flex flex-column" style="@(item.IsCompleted ? "opacity: 0.7; filter: grayscale(1);" : "")">
+                            <div style="position: relative;">
+                                <img src="@item.ImageUrl" class="card-img-top rounded-3 mb-3" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                @if(item.IsCompleted)
+                                {
+                                     <span class="badge bg-dark text-white position-absolute top-0 start-0 m-3 shadow-sm px-3 py-2">
+                                        @(item.CompletedType == mvcFinal2.Models.ListingCompletionType.Sold ? "SATILDI" : "KİRALANDI")
+                                    </span>
+                                }
+                            </div>
+                            <div class="flex-grow-1">
+                                <span class="badge bg-warning text-dark mb-2">@item.Type</span>
+                                <h5 class="fw-bold text-truncate">@item.Title</h5>
+                                <p class="text-muted small mb-2"><i class="bi bi-geo-alt"></i> @item.Location</p>
+                                <p class="small text-muted line-clamp-2">@item.Description</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                <span class="fw-bold fs-5">@(item.Price == 0 ? "Ücretsiz" : "₺" + item.Price.ToString("N0"))</span>
+                                <a href="/Listings/Details/@item.Id" class="btn btn-sm btn-outline-dark">İncele</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link" href="#">Önceki</a></li>
+                    <li class="page-item active"><a class="page-link bg-warning border-warning text-dark" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link text-dark" href="#">Sonraki</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

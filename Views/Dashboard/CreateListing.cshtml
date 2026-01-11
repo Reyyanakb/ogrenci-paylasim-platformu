@@ -1,0 +1,58 @@
+@model mvcFinal2.Models.Listing
+
+@{
+    ViewData["Title"] = "Yeni İlan Ekle";
+}
+
+<div class="container section-padding">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card-custom p-4">
+                <h3 class="fw-bold mb-4">Yeni İlan Ekle</h3>
+                
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <form asp-action="CreateListing" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">İlan Başlığı</label>
+                        <input asp-for="Title" class="form-control form-control-custom" placeholder="Örn: Beşiktaş'ta Kiralık Oda" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Kategori</label>
+                            <select asp-for="Type" class="form-select form-control-custom">
+                                <option value="Room">Kiralık Oda</option>
+                                <option value="Item">İkinci El Eşya</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Konum</label>
+                            <input asp-for="Location" class="form-control form-control-custom" placeholder="Şehir, İlçe" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Fiyat (₺)</label>
+                        <input asp-for="Price" type="number" class="form-control form-control-custom" placeholder="0" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Açıklama</label>
+                        <textarea asp-for="Description" class="form-control form-control-custom" rows="5" placeholder="İlan detaylarını buraya yazın..." required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">İlan Fotoğrafı</label>
+                        <input type="file" name="imageFile" class="form-control form-control-custom" accept="image/*" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary-custom">İlanı Yayınla</button>
+                        <a asp-action="Index" class="btn btn-light border">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+@model mvcFinal2.Models.AppUser
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container section-padding">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card-custom p-4 p-md-5">
+                <h2 class="text-center mb-4">Aramıza Katıl</h2>
+                <form method="post" asp-action="Register">
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">@ViewBag.Error</div>
+                    }
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Ad Soyad</label>
+                        <input type="text" class="form-control form-control-custom" asp-for="FullName" placeholder="Adınız Soyadınız">
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">E-posta Adresi</label>
+                        <input type="email" class="form-control form-control-custom" asp-for="Email" placeholder="ornek@ogrenci.edu.tr">
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Şifre</label>
+                        <input type="password" class="form-control form-control-custom" asp-for="Password" placeholder="••••••••">
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Üniversite</label>
+                        <select class="form-select form-control-custom" asp-for="University">
+                            <option value="">Seçiniz...</option>
+                            <option value="İTÜ">İstanbul Teknik Üniversitesi</option>
+                            <option value="Boğaziçi">Boğaziçi Üniversitesi</option>
+                            <option value="YTÜ">Yıldız Teknik Üniversitesi</option>
+                            <option value="Diğer">Diğer</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Şehir</label>
+                        <select class="form-select form-control-custom" asp-for="City">
+                            <option value="">Seçiniz...</option>
+                            <option value="İstanbul">İstanbul</option>
+                            <option value="Ankara">Ankara</option>
+                            <option value="İzmir">İzmir</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Kullanıcı Türü</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" asp-for="UserType" value="KYK" id="typeKYK" checked>
+                                <label class="form-check-label" for="typeKYK">KYK Öğrencisi</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" asp-for="UserType" value="House" id="typeHouse">
+                                <label class="form-check-label" for="typeHouse">Evde Kalan</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom w-100 mb-3">Kayıt Ol</button>
+                    
+                    <div class="text-center">
+                        <p class="small text-muted">Zaten hesabın var mı? <a href="/Account/Login" class="fw-bold text-dark">Giriş Yap</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

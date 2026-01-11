@@ -1,0 +1,47 @@
+@model List<mvcFinal2.Models.AppUser>
+
+@{
+    ViewData["Title"] = "Öğrenci Profilleri";
+}
+
+<div class="container section-padding">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold">Öğrenci Topluluğu</h2>
+        <p class="text-muted">Platformumuza kayıtlı öğrencilerle tanışın.</p>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var user in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card-custom h-100 p-4 text-center">
+                    <div class="mb-3">
+                         <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle" style="width: 80px; height: 80px;">
+                            <i class="bi bi-person-fill text-warning display-4"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-1">@user.FullName</h5>
+                    <p class="text-muted small mb-3">@(user.University ?? "Üniversite Bilgisi Yok")</p>
+                    
+                    <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+                         <span class="badge bg-white border text-dark">@user.UserType</span>
+                         @if(!string.IsNullOrEmpty(user.City))
+                         {
+                             <span class="badge bg-white border text-dark">
+                                 <i class="bi bi-geo-alt-fill text-warning"></i> @user.City
+                             </span>
+                         }
+                    </div>
+
+                    <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-outline-dark rounded-pill w-100 mt-auto">Profili İncele</a>
+                </div>
+            </div>
+        }
+        @if (Model.Count == 0)
+        {
+            <div class="col-12 text-center py-5">
+                <div class="text-muted fs-4">Henüz kayıtlı kullanıcı bulunmuyor.</div>
+            </div>
+        }
+    </div>
+</div>

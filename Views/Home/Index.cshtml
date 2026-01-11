@@ -1,0 +1,129 @@
+﻿@model List<mvcFinal2.Models.Listing>
+
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-bg-slider">
+        <div class="hero-bg-slide"></div>
+        <div class="hero-bg-slide"></div>
+        <div class="hero-bg-slide"></div>
+    </div>
+    <div class="container hero-content fade-in-up">
+        <h1 class="hero-title">Öğrenciler İçin<br>Paylaşım Platformu</h1>
+        <p class="hero-subtitle">KYK yurtlarında ve öğrenci evlerinde boş odanı paylaş, ihtiyacın olmayan eşyaları değerlendir. Güvenli, hızlı ve öğrenci dostu.</p>
+        <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
+            <a asp-controller="Listings" asp-action="Rooms" class="btn btn-primary-custom d-flex align-items-center gap-2">
+                <i class="bi bi-door-open-fill"></i> Oda Bul
+            </a>
+            <a asp-controller="Listings" asp-action="Items" class="btn btn-secondary-custom d-flex align-items-center gap-2">
+                <i class="bi bi-box-seam-fill"></i> Eşya Bul
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="section-padding bg-white">
+    <div class="container">
+        <div class="text-center mb-5 fade-in-up" style="animation-delay: 0.2s;">
+            <h2 class="mb-3">Nasıl Çalışır?</h2>
+            <p class="text-muted">Sadece 3 adımda paylaşmaya veya aramaya başla.</p>
+        </div>
+        <div class="row g-4">
+            <!-- Step 1 -->
+            <div class="col-md-4 fade-in-up" style="animation-delay: 0.3s;">
+                <a asp-controller="Account" asp-action="Register" class="text-decoration-none text-dark">
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <i class="bi bi-person-plus-fill step-icon"></i>
+                        </div>
+                        <h4 class="step-title">Üye Ol</h4>
+                        <p class="text-muted mb-0">Öğrenci e-postan ile hızlıca kayıt ol ve güvenli topluluğa katıl.</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="col-md-4 fade-in-up" style="animation-delay: 0.4s;">
+                <a asp-controller="Listings" asp-action="Index" class="text-decoration-none text-dark">
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <i class="bi bi-search-heart-fill step-icon"></i>
+                        </div>
+                        <h4 class="step-title">İlanları Keşfet</h4>
+                        <p class="text-muted mb-0">İhtiyacına uygun odayı veya eşyayı filtreleyerek kolayca bul.</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="col-md-4 fade-in-up" style="animation-delay: 0.5s;">
+                <a asp-controller="Users" asp-action="Index" class="text-decoration-none text-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Öğrenci profillerini incele">
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <i class="bi bi-chat-left-text-fill step-icon"></i>
+                        </div>
+                        <h4 class="step-title">İletişime Geç</h4>
+                        <p class="text-muted mb-0">İlan sahibiyle platform üzerinden güvenle mesajlaş ve anlaş.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Listings Section -->
+<section class="section-padding" style="background-color: var(--secondary-color);">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2 class="mb-0">Son Eklenen İlanlar</h2>
+            <a asp-controller="Listings" asp-action="Index" class="btn btn-outline-dark rounded-pill px-4">Tümünü Gör &rarr;</a>
+        </div>
+        
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card-custom h-100 d-flex flex-column" style="@(item.IsCompleted ? "opacity: 0.7; filter: grayscale(1);" : "")">
+                        <div style="position: relative;">
+                            <img src="@item.ImageUrl" class="card-img-top rounded-3 mb-3" alt="@item.Title" style="height: 250px; object-fit: cover; width: 100%;">
+                             @if(item.IsCompleted)
+                             {
+                                  <span class="badge bg-dark text-white position-absolute top-0 start-0 m-3 shadow-sm rounded-pill px-3 py-2" style="z-index: 2;">
+                                     @(item.CompletedType == mvcFinal2.Models.ListingCompletionType.Sold ? "SATILDI" : "KİRALANDI")
+                                 </span>
+                             }
+                             else
+                             {
+                                 <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3 shadow-sm rounded-pill px-3 py-2">
+                                    @(item.Type == "Room" ? "🏠 Kiralık Oda" : "📦 Satılık Eşya")
+                                </span>
+                             }
+                        </div>
+                        <h5 class="fw-bold text-truncate mb-1">@item.Title</h5>
+                        <p class="text-muted small mb-2 d-flex align-items-center gap-1">
+                            <i class="bi bi-geo-alt-fill text-warning"></i> @item.Location
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top flex-grow-1 align-items-end">
+                            <span class="fw-bold fs-5 text-dark">@(item.Price == 0 ? "Ücretsiz" : "₺" + item.Price.ToString("N0"))</span>
+                            <a href="/Listings/Details/@item.Id" class="btn btn-sm btn-outline-dark rounded-pill px-3">İncele</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}

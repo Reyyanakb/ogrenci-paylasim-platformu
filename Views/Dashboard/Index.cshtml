@@ -1,0 +1,121 @@
+@model mvcFinal2.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Paneli";
+}
+
+<div class="container section-padding">
+    <div class="row">
+        <!-- Sidebar Menu -->
+        <partial name="_DashboardSidebar" model="Model" />
+
+        <!-- Main Content Area -->
+        <div class="col-md-9">
+            <!-- Welcome Info -->
+            <div class="card-custom p-4 mb-4 bg-primary-light" style="background-color: #FFFDE7;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold">Hoş Geldin, @(User.Identity?.Name ?? "Kullanıcı")! 👋</h4>
+                        <p class="mb-0 text-muted">Bugün senin için yeni ilanlar var, göz atmak ister misin?</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Stats / Quick Info -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card-custom p-3 text-center">
+                        <h3 class="fw-bold mb-1">@Model.Listings.Count</h3>
+                        <small class="text-muted">Aktif İlanım</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-custom p-3 text-center">
+                        <h3 class="fw-bold mb-1">@Model.FavoritesCount</h3>
+                        <small class="text-muted">Favori</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-custom p-3 text-center">
+                        <h3 class="fw-bold mb-1 @(Model.UnreadMessageCount > 0 ? "text-danger" : "")">@Model.UnreadMessageCount</h3>
+                        <small class="text-muted">Okunmamış Mesaj</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Listings Table -->
+            <div class="card-custom p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">İlanlarım</h5>
+                    <a asp-action="CreateListing" class="btn btn-sm btn-primary-custom">+ Yeni İlan Ekle</a>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>İlan Başlığı</th>
+                                <th>Kategori</th>
+                                <th>Fiyat</th>
+                                <th>Durum</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Listings)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="@item.ImageUrl" class="rounded me-2" alt="" style="width: 40px; height: 40px; object-fit: cover; @(item.IsCompleted ? "filter: grayscale(1);" : "")">
+                                            <span class="fw-bold small @(item.IsCompleted ? "text-muted text-decoration-line-through" : "")">@item.Title</span>
+                                        </div>
+                                    </td>
+                                    <td>@(item.Type == "Room" ? "Oda" : "Eşya")</td>
+                                    <td>@(item.Price == 0 ? "Ücretsiz" : "₺" + item.Price.ToString("N0"))</td>
+                                    <td>
+                                        @if (item.IsCompleted)
+                                        {
+                                            <span class="badge bg-secondary">@(item.CompletedType == mvcFinal2.Models.ListingCompletionType.Sold ? "Satıldı" : "Kiralandı")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Yayında</span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <div class="d-flex gap-1">
+                                            @if (item.IsCompleted)
+                                            {
+                                                <form asp-controller="Listings" asp-action="ReactivateListing" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                                    <button type="submit" class="btn btn-sm btn-warning border text-dark" title="Tekrar Yayına Al"><i class="bi bi-arrow-repeat"></i></button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <a href="/Dashboard/EditListing/@item.Id" class="btn btn-sm btn-light border text-primary" title="Düzenle"><i class="bi bi-pencil"></i></a>
+                                            }
+                                            <a href="/Listings/Details/@item.Id" class="btn btn-sm btn-light border" title="Görüntüle"><i class="bi bi-eye"></i></a>
+                                            <form asp-action="DeleteListing" method="post" onsubmit="return confirm('Bu ilanı silmek istediğinize emin misiniz?');" style="display:inline;">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-light border text-danger" title="Sil"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            @if (!Model.Listings.Any())
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Henüz bir ilanın yok.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

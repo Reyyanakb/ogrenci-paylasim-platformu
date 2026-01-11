@@ -1,0 +1,87 @@
+@model mvcFinal2.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Profil Ayarları";
+}
+
+<div class="container section-padding">
+    <div class="row">
+        <!-- Sidebar Menu -->
+        <partial name="_DashboardSidebar" model="Model" />
+
+        <!-- Main Content Area -->
+        <div class="col-md-9">
+            <div class="card-custom p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Profil Ayarları</h4>
+                </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                <img src="@(Model.User?.ProfileImage != null && Model.User.ProfileImage.Length > 0 ? $"data:image/jpeg;base64,{Convert.ToBase64String(Model.User.ProfileImage)}" : (!string.IsNullOrEmpty(Model.User?.ProfileImageUrl) ? Model.User.ProfileImageUrl : "https://via.placeholder.com/150"))" 
+                                     class="rounded-circle img-thumbnail mb-3" 
+                                     alt="Profil Resmi" 
+                                     id="profilePreview"
+                                     style="width: 150px; height: 150px; object-fit: cover;">
+                                
+                                <div class="mt-2">
+                                    <label for="profileImage" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-camera me-1"></i> Fotoğraf Değiştir
+                                    </label>
+                                    <input type="file" name="profileImage" id="profileImage" class="d-none" accept="image/*" onchange="previewImage(this)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label asp-for="User!.FullName" class="form-label fw-bold">Ad Soyad</label>
+                                <input asp-for="User!.FullName" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">E-posta</label>
+                                <input type="text" class="form-control" value="@Model.User?.Email" disabled readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="User!.University" class="form-label fw-bold">Üniversite</label>
+                                <input asp-for="User!.University" class="form-control" placeholder="Üniversiteniz">
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="User!.City" class="form-label fw-bold">Şehir</label>
+                                <input asp-for="User!.City" class="form-control" placeholder="Yaşadığınız Şehir">
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary-custom px-4">Kaydet</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profilePreview').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

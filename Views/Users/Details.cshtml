@@ -1,0 +1,129 @@
+@model mvcFinal2.Models.AppUser
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<div class="container section-padding">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card-custom p-5">
+                <div class="text-center mb-4">
+                     <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 120px; height: 120px; overflow: hidden;">
+                        @if (Model.ProfileImage != null && Model.ProfileImage.Length > 0)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ProfileImage)" class="w-100 h-100" style="object-fit: cover;" alt="@Model.FullName">
+                        }
+                        else if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                        {
+                            <img src="@Model.ProfileImageUrl" class="w-100 h-100" style="object-fit: cover;" alt="@Model.FullName">
+                        }
+                        else
+                        {
+                            <i class="bi bi-person-fill text-warning display-2"></i>
+                        }
+                    </div>
+                    <h2 class="fw-bold mb-1">@Model.FullName</h2>
+                    <p class="text-muted fs-5">@(Model.University ?? "-")</p>
+                    
+                    <div class="d-flex justify-content-center gap-3 mt-3">
+                         <span class="badge bg-warning text-dark px-3 py-2 border-0">@Model.UserType</span>
+                         @if(!string.IsNullOrEmpty(Model.City))
+                         {
+                             <span class="badge bg-light border text-dark px-3 py-2">
+                                 <i class="bi bi-geo-alt-fill text-warning"></i> @Model.City
+                             </span>
+                         }
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-6 mb-3">
+                        <div class="p-4 bg-light rounded-3 h-100">
+                             <h6 class="text-muted text-uppercase small fw-bold mb-3">İletişim</h6>
+                             <div class="d-flex align-items-center gap-3">
+                                 <div class="rounded-circle bg-white p-2 border">
+                                     <i class="bi bi-envelope fs-5"></i>
+                                 </div>
+                                 <div class="text-truncate" style="max-width: 100%;">
+                                     <div class="small text-muted">E-posta Adresi</div>
+                                     <div class="fw-bold text-truncate">@Model.Email</div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="p-4 bg-light rounded-3 h-100">
+                             <h6 class="text-muted text-uppercase small fw-bold mb-3">Üyelik</h6>
+                             <div class="d-flex align-items-center gap-3">
+                                 <div class="rounded-circle bg-white p-2 border">
+                                     <i class="bi bi-calendar-check fs-5"></i>
+                                 </div>
+                                 <div>
+                                     <div class="small text-muted">Kayıt Tarihi</div>
+                                     <div class="fw-bold">@Model.CreatedAt.ToString("d MMMM yyyy")</div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Listings Section -->
+                <div class="mt-5">
+                    <h5 class="fw-bold mb-4 ps-1 border-start border-4 border-warning">&nbsp;@Model.FullName'in İlanları</h5>
+                    
+                    @if (Model.Listings != null && Model.Listings.Any(l => l.IsApproved))
+                    {
+                        <div class="row g-3">
+                            @foreach (var listing in Model.Listings.Where(l => l.IsApproved).OrderByDescending(l => l.CreatedAt))
+                            {
+                                <div class="col-md-6">
+                                    <div class="card h-100 border rounded-3 shadow-sm">
+                                        <div class="position-relative">
+                                            @if (!string.IsNullOrEmpty(listing.ImageUrl))
+                                            {
+                                                <img src="@listing.ImageUrl" class="card-img-top" alt="@listing.Title" style="height: 160px; object-fit: cover;">
+                                            }
+                                            else
+                                            {
+                                                <div class="bg-light d-flex align-items-center justify-content-center text-muted" style="height: 160px;">
+                                                    <i class="bi bi-image fs-1"></i>
+                                                </div>
+                                            }
+                                            <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 small">
+                                                @(listing.Type == "Room" ? "🏠 Oda" : "📦 Eşya")
+                                            </span>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6 class="card-title fw-bold text-truncate">@listing.Title</h6>
+                                            <p class="card-text small text-muted text-truncate mb-2">
+                                                <i class="bi bi-geo-alt-fill text-warning"></i> @listing.Location
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <span class="fw-bold small text-dark">@(listing.Price == 0 ? "Ücretsiz" : "₺" + listing.Price.ToString("N0"))</span>
+                                                <a href="/Listings/Details/@listing.Id" class="btn btn-sm btn-outline-dark rounded-pill">İncele</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                         <div class="alert alert-light text-center border-0 small text-muted">
+                            Bu kullanıcının henüz aktif ilanı bulunmuyor.
+                        </div>
+                    }
+                </div>
+
+                <div class="mt-5 text-center">
+
+                    <br>
+                    <a asp-action="Index" class="btn btn-link text-decoration-none text-muted">
+                        <i class="bi bi-arrow-left"></i> Listeye Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

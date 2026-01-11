@@ -1,0 +1,137 @@
+@model mvcFinal2.Models.Listing
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = Model.Title;
+    var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<div class="container section-padding">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-muted">Ana Sayfa</a></li>
+            <li class="breadcrumb-item"><a href="@(Model.Type == "Room" ? "/Listings/Rooms" : "/Listings/Items")" class="text-muted">@(Model.Type == "Room" ? "Kiralık Odalar" : "İkinci El Eşyalar")</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Left Content: Image & Details -->
+        <div class="col-lg-8">
+            <div class="card-custom p-0 overflow-hidden mb-4">
+                <img src="@Model.ImageUrl" class="w-100" alt="@Model.Title" style="max-height: 400px; object-fit: cover;">
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            @if (Model.IsCompleted)
+                            {
+                                <span class="badge bg-secondary text-white mb-2">@(Model.CompletedType == mvcFinal2.Models.ListingCompletionType.Sold ? "SATILDI" : "KİRALANDI")</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark mb-2">@(Model.Type == "Room" ? "Kiralık Oda" : "Satılık Eşya")</span>
+                            }
+                            <h2 class="fw-bold mb-1">@Model.Title</h2>
+                            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> @Model.Location</p>
+                        </div>
+                        <div class="text-end">
+                            <h3 class="fw-bold text-primary mb-0">₺@Model.Price.ToString("N0")</h3>
+                            <small class="text-muted">@(Model.Type == "Room" ? "Aylık" : "")</small>
+                        </div>
+                    </div>
+
+                    <hr class="text-muted my-4">
+
+                    <h4 class="fw-bold mb-3">Açıklama</h4>
+                    <p class="text-muted mb-4">
+                        @Model.Description
+                    </p>
+                    
+                    <h5 class="fw-bold mb-3">Özellikler</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-star text-warning"></i> <span>Öne Çıkan</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-check-circle text-warning"></i> <span>Onaylı İlan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Content: Actions & User Info -->
+        <div class="col-lg-4">
+            <!-- Action Buttons -->
+            <div class="card-custom p-4 mb-4">
+                @if (Model.IsCompleted)
+                {
+                     <div class="alert alert-secondary text-center fw-bold mb-3">
+                        <i class="bi bi-info-circle"></i> Bu ilan @(Model.CompletedType == mvcFinal2.Models.ListingCompletionType.Sold ? "SATILDI" : "KİRALANDI")
+                    </div>
+                    
+                    @if (currentUserId == Model.UserId.ToString())
+                    {
+                        <form asp-controller="Listings" asp-action="ReactivateListing" asp-route-id="@Model.Id" method="post">
+                            <button type="submit" class="btn btn-warning w-100 mb-3 fw-bold">Tekrar Yayına Al</button>
+                        </form>
+                    }
+                }
+                else
+                {
+                    <a href="/Message/Chat?receiverId=@Model.UserId" class="btn btn-primary-custom w-100 mb-3 text-center d-block">🟡 Mesaj Gönder</a>
+                    
+                         <form asp-controller="Listings" asp-action="MarkAsCompleted" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Bu ilanı satın almak/kiralamak istiyor musunuz? İşlem sonrası ilan sahibine bildirim gönderilecektir.');">
+                            <button type="submit" class="btn btn-success w-100 mb-3 fw-bold">
+                                <i class="bi bi-cart-check-fill"></i> @(Model.Type == "Room" ? "Kirala" : "Satın Al")
+                            </button>
+                        </form>
+                }
+
+                <form asp-controller="Dashboard" asp-action="ToggleFavorite" method="post">
+                    <input type="hidden" name="listingId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-outline-danger w-100 mb-2">🤍 Favorilere Ekle / Çıkar</button>
+                </form>
+            </div>
+
+            <!-- User Profile -->
+            <div class="card-custom p-4">
+                <h5 class="fw-bold mb-3">İlan Sahibi</h5>
+                <a href="/Users/Details/@Model.UserId" class="text-decoration-none text-dark">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        @if (Model.User?.ProfileImage != null && Model.User.ProfileImage.Length > 0)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.User.ProfileImage)" class="rounded-circle border" alt="Profil" style="width: 60px; height: 60px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <img src="@(!string.IsNullOrEmpty(Model.User?.ProfileImageUrl) ? Model.User.ProfileImageUrl : "https://via.placeholder.com/60")" class="rounded-circle border" alt="Profil" style="width: 60px; height: 60px; object-fit: cover;">
+                        }
+                        <div>
+                            <h6 class="mb-0 fw-bold">@(Model.User?.FullName ?? "Kullanıcı")</h6>
+                            <small class="text-muted">@(Model.User?.University ?? "Üniversite")</small>
+                        </div>
+                    </div>
+                </a>
+                <div class="d-grid gap-2">
+                    <a href="/Users/Details/@Model.UserId" class="btn btn-sm btn-light border">Profili Gör</a>
+
+                </div>
+            </div>
+
+            <!-- Safety Tips -->
+            <div class="card-custom p-4 mt-4 bg-light border-0">
+                <h6 class="fw-bold mb-2"><i class="bi bi-shield-check"></i> Güvenlik İpuçları</h6>
+                <ul class="small text-muted ps-3 mb-0">
+                    <li>Ödeme yapmadan önce evi görün.</li>
+                    <li>Kişisel verilerinizi paylaşırken dikkatli olun.</li>
+                    <li>Şüpheli durumları bize bildirin.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
