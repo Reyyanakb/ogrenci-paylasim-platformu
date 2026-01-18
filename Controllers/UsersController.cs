@@ -24,6 +24,8 @@ namespace mvcFinal2.Controllers
         {
             var user = _context.Users
                 .Include(u => u.Listings)
+                .Include(u => u.ReviewsReceived)
+                .ThenInclude(r => r.Reviewer)
                 .FirstOrDefault(u => u.Id == id);
             if (user == null)
             {

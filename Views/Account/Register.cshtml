@@ -6,54 +6,49 @@
 <div class="container section-padding">
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card-custom p-4 p-md-5">
-                <h2 class="text-center mb-4">Aramıza Katıl</h2>
+            <div class="card-custom p-4 p-md-5 animate-form-card">
+                <h2 class="text-center mb-4 auth-header-animate">Aramıza Katıl</h2>
                 <form method="post" asp-action="Register">
                     @if (ViewBag.Error != null)
                     {
-                        <div class="alert alert-danger">@ViewBag.Error</div>
+                        <div class="alert alert-danger animate-input-group">@ViewBag.Error</div>
                     }
 
-                    <div class="mb-3">
+                    <div class="mb-3 animate-input-group">
                         <label class="form-label fw-bold small">Ad Soyad</label>
                         <input type="text" class="form-control form-control-custom" asp-for="FullName" placeholder="Adınız Soyadınız">
                         <span asp-validation-for="FullName" class="text-danger small"></span>
                     </div>
                     
-                    <div class="mb-3">
+                    <div class="mb-3 animate-input-group">
                         <label class="form-label fw-bold small">E-posta Adresi</label>
                         <input type="email" class="form-control form-control-custom" asp-for="Email" placeholder="ornek@ogrenci.edu.tr">
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
                     
-                    <div class="mb-3">
+                    <div class="mb-3 animate-input-group">
                         <label class="form-label fw-bold small">Şifre</label>
                         <input type="password" class="form-control form-control-custom" asp-for="Password" placeholder="••••••••">
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small">Üniversite</label>
-                        <select class="form-select form-control-custom" asp-for="University">
-                            <option value="">Seçiniz...</option>
-                            <option value="İTÜ">İstanbul Teknik Üniversitesi</option>
-                            <option value="Boğaziçi">Boğaziçi Üniversitesi</option>
-                            <option value="YTÜ">Yıldız Teknik Üniversitesi</option>
-                            <option value="Diğer">Diğer</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
+                    <div class="mb-3 animate-input-group">
                         <label class="form-label fw-bold small">Şehir</label>
-                        <select class="form-select form-control-custom" asp-for="City">
+                        <select class="form-select form-control-custom" asp-for="City" id="City" required>
                             <option value="">Seçiniz...</option>
-                            <option value="İstanbul">İstanbul</option>
-                            <option value="Ankara">Ankara</option>
-                            <option value="İzmir">İzmir</option>
                         </select>
+                        <span asp-validation-for="City" class="text-danger small"></span>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3 animate-input-group">
+                        <label class="form-label fw-bold small">Üniversite</label>
+                        <select class="form-select form-control-custom" asp-for="University" id="University" required>
+                            <option value="">Önce Şehir Seçiniz...</option>
+                        </select>
+                        <span asp-validation-for="University" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4 animate-input-group">
                         <label class="form-label fw-bold small">Kullanıcı Türü</label>
                         <div class="d-flex gap-3">
                             <div class="form-check">
@@ -67,9 +62,9 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary-custom w-100 mb-3">Kayıt Ol</button>
+                    <button type="submit" class="btn btn-primary-custom w-100 mb-3 animate-input-group">Kayıt Ol</button>
                     
-                    <div class="text-center">
+                    <div class="text-center animate-input-group">
                         <p class="small text-muted">Zaten hesabın var mı? <a href="/Account/Login" class="fw-bold text-dark">Giriş Yap</a></p>
                     </div>
                 </form>
@@ -77,3 +72,128 @@
         </div>
     </div>
 </div>
+
+<script>
+    const cityUniversities = {
+        "Adana": ["Çukurova Üniversitesi", "Alparslan Türkeş Bilim ve Teknoloji Üniversitesi"],
+        "Adıyaman": ["Adıyaman Üniversitesi"],
+        "Afyonkarahisar": ["Afyon Kocatepe Üniversitesi", "Afyonkarahisar Sağlık Bilimleri Üniversitesi"],
+        "Ağrı": ["Ağrı İbrahim Çeçen Üniversitesi"],
+        "Aksaray": ["Aksaray Üniversitesi"],
+        "Amasya": ["Amasya Üniversitesi"],
+        "Ankara": ["Ankara Üniversitesi", "Orta Doğu Teknik Üniversitesi (ODTÜ)", "Hacettepe Üniversitesi", "Gazi Üniversitesi", "Bilkent Üniversitesi", "Başkent Üniversitesi", "TOBB Ekonomi ve Teknoloji Üniversitesi", "TED Üniversitesi", "Atılım Üniversitesi", "Çankaya Üniversitesi", "Ufuk Üniversitesi", "Yüksek İhtisas Üniversitesi", "Ankara Hacı Bayram Veli Üniversitesi", "Ankara Yıldırım Beyazıt Üniversitesi", "Ankara Sosyal Bilimler Üniversitesi", "Lokman Hekim Üniversitesi", "Ankara Medipol Üniversitesi", "Ostim Teknik Üniversitesi", "Ankara Müzik ve Güzel Sanatlar Üniversitesi"],
+        "Antalya": ["Akdeniz Üniversitesi", "Antalya Bilim Üniversitesi", "Antalya Akev Üniversitesi", "Alanya Alaaddin Keykubat Üniversitesi", "Alanya Hamdullah Emin Paşa Üniversitesi"],
+        "Ardahan": ["Ardahan Üniversitesi"],
+        "Artvin": ["Artvin Çoruh Üniversitesi"],
+        "Aydın": ["Aydın Adnan Menderes Üniversitesi"],
+        "Balıkesir": ["Balıkesir Üniversitesi", "Bandırma Onyedi Eylül Üniversitesi"],
+        "Bartın": ["Bartın Üniversitesi"],
+        "Batman": ["Batman Üniversitesi"],
+        "Bayburt": ["Bayburt Üniversitesi"],
+        "Bilecik": ["Bilecik Şeyh Edebali Üniversitesi"],
+        "Bingöl": ["Bingöl Üniversitesi"],
+        "Bitlis": ["Bitlis Eren Üniversitesi"],
+        "Bolu": ["Bolu Abant İzzet Baysal Üniversitesi"],
+        "Burdur": ["Burdur Mehmet Akif Ersoy Üniversitesi"],
+        "Bursa": ["Bursa Uludağ Üniversitesi", "Bursa Teknik Üniversitesi", "Mudanya Üniversitesi"],
+        "Çanakkale": ["Çanakkale Onsekiz Mart Üniversitesi"],
+        "Çankırı": ["Çankırı Karatekin Üniversitesi"],
+        "Çorum": ["Hitit Üniversitesi"],
+        "Denizli": ["Pamukkale Üniversitesi"],
+        "Diyarbakır": ["Dicle Üniversitesi"],
+        "Düzce": ["Düzce Üniversitesi"],
+        "Edirne": ["Trakya Üniversitesi"],
+        "Elazığ": ["Fırat Üniversitesi"],
+        "Erzincan": ["Erzincan Binali Yıldırım Üniversitesi"],
+        "Erzurum": ["Atatürk Üniversitesi", "Erzurum Teknik Üniversitesi"],
+        "Eskişehir": ["Anadolu Üniversitesi", "Eskişehir Osmangazi Üniversitesi", "Eskişehir Teknik Üniversitesi"],
+        "Gaziantep": ["Gaziantep Üniversitesi", "Gaziantep İslam Bilim ve Teknoloji Üniversitesi", "Hasan Kalyoncu Üniversitesi", "Sanko Üniversitesi"],
+        "Giresun": ["Giresun Üniversitesi"],
+        "Gümüşhane": ["Gümüşhane Üniversitesi"],
+        "Hakkari": ["Hakkari Üniversitesi"],
+        "Hatay": ["Hatay Mustafa Kemal Üniversitesi", "İskenderun Teknik Üniversitesi"],
+        "Iğdır": ["Iğdır Üniversitesi"],
+        "Isparta": ["Süleyman Demirel Üniversitesi", "Isparta Uygulamalı Bilimler Üniversitesi"],
+        "İstanbul": ["İstanbul Üniversitesi", "Marmara Üniversitesi", "İstanbul Teknik Üniversitesi (İTÜ)", "Boğaziçi Üniversitesi", "Yıldız Teknik Üniversitesi (YTÜ)", "Mimar Sinan Güzel Sanatlar Üniversitesi", "Galatasaray Üniversitesi", "Türk-Alman Üniversitesi", "İstanbul Medeniyet Üniversitesi", "Sağlık Bilimleri Üniversitesi", "İstanbul Üniversitesi-Cerrahpaşa", "Koç Üniversitesi", "Sabancı Üniversitesi", "İstanbul Bilgi Üniversitesi", "İstanbul Aydın Üniversitesi", "Bahçeşehir Üniversitesi", "Yeditepe Üniversitesi", "Acıbadem Mehmet Ali Aydınlar Üniversitesi", "Kadir Has Üniversitesi", "Doğuş Üniversitesi", "Özyeğin Üniversitesi", "İstanbul Kültür Üniversitesi", "Maltepe Üniversitesi", "Beykent Üniversitesi", "Haliç Üniversitesi", "İstanbul Ticaret Üniversitesi", "İstanbul Okan Üniversitesi", "İstanbul Arel Üniversitesi", "Işık Üniversitesi", "Üsküdar Üniversitesi", "Altınbaş Üniversitesi", "Bezmialem Vakıf Üniversitesi", "Biruni Üniversitesi", "Fatih Sultan Mehmet Vakıf Üniversitesi", "İstanbul Gelişim Üniversitesi", "İstanbul Kemerburgaz Üniversitesi", "İstanbul 29 Mayıs Üniversitesi", "İstanbul Esenyurt Üniversitesi", "İstanbul Gedik Üniversitesi", "İstanbul Medipol Üniversitesi", "İstanbul Rumeli Üniversitesi", "İstanbul Sabahattin Zaim Üniversitesi", "İstanbul Topkapı Üniversitesi", "İstinye Üniversitesi", "Nişantaşı Üniversitesi", "Piri Reis Üniversitesi", "MEF Üniversitesi", "Türk Hava Kurumu Üniversitesi", "Fenerbahçe Üniversitesi", "İstanbul Atlas Üniversitesi", "İstanbul Galata Üniversitesi", "İstanbul Sağlık ve Teknoloji Üniversitesi", "Mudanya Üniversitesi"],
+        "İzmir": ["Ege Üniversitesi", "Dokuz Eylül Üniversitesi", "İzmir Yüksek Teknoloji Enstitüsü", "İzmir Katip Çelebi Üniversitesi", "İzmir Demokrasi Üniversitesi", "İzmir Bakırçay Üniversitesi", "İzmir Ekonomi Üniversitesi", "Yaşar Üniversitesi", "İzmir Tınaztepe Üniversitesi"],
+        "Kahramanmaraş": ["Kahramanmaraş Sütçü İmam Üniversitesi", "Kahramanmaraş İstiklal Üniversitesi"],
+        "Karabük": ["Karabük Üniversitesi"],
+        "Karaman": ["Karamanoğlu Mehmetbey Üniversitesi"],
+        "Kars": ["Kafkas Üniversitesi"],
+        "Kastamonu": ["Kastamonu Üniversitesi"],
+        "Kayseri": ["Erciyes Üniversitesi", "Abdullah Gül Üniversitesi", "Kayseri Üniversitesi", "Nuh Naci Yazgan Üniversitesi"],
+        "Kırıkkale": ["Kırıkkale Üniversitesi"],
+        "Kırklareli": ["Kırklareli Üniversitesi"],
+        "Kırşehir": ["Kırşehir Ahi Evran Üniversitesi"],
+        "Kilis": ["Kilis 7 Aralık Üniversitesi"],
+        "Kocaeli": ["Kocaeli Üniversitesi", "Gebze Teknik Üniversitesi", "Kocaeli Sağlık ve Teknoloji Üniversitesi"],
+        "Konya": ["Selçuk Üniversitesi", "Necmettin Erbakan Üniversitesi", "Konya Teknik Üniversitesi", "KTO Karatay Üniversitesi", "Konya Gıda ve Tarım Üniversitesi"],
+        "Kütahya": ["Kütahya Dumlupınar Üniversitesi", "Kütahya Sağlık Bilimleri Üniversitesi"],
+        "Malatya": ["İnönü Üniversitesi", "Malatya Turgut Özal Üniversitesi"],
+        "Manisa": ["Manisa Celal Bayar Üniversitesi"],
+        "Mardin": ["Mardin Artuklu Üniversitesi"],
+        "Mersin": ["Mersin Üniversitesi", "Tarsus Üniversitesi", "Çağ Üniversitesi", "Toros Üniversitesi"],
+        "Muğla": ["Muğla Sıtkı Koçman Üniversitesi"],
+        "Muş": ["Muş Alparslan Üniversitesi"],
+        "Nevşehir": ["Nevşehir Hacı Bektaş Veli Üniversitesi", "Kapadokya Üniversitesi"],
+        "Niğde": ["Niğde Ömer Halisdemir Üniversitesi"],
+        "Ordu": ["Ordu Üniversitesi"],
+        "Osmaniye": ["Osmaniye Korkut Ata Üniversitesi"],
+        "Rize": ["Recep Tayyip Erdoğan Üniversitesi"],
+        "Sakarya": ["Sakarya Üniversitesi", "Sakarya Uygulamalı Bilimler Üniversitesi"],
+        "Samsun": ["Ondokuz Mayıs Üniversitesi", "Samsun Üniversitesi"],
+        "Siirt": ["Siirt Üniversitesi"],
+        "Sinop": ["Sinop Üniversitesi"],
+        "Sivas": ["Sivas Cumhuriyet Üniversitesi", "Sivas Bilim ve Teknoloji Üniversitesi"],
+        "Şanlıurfa": ["Harran Üniversitesi"],
+        "Şırnak": ["Şırnak Üniversitesi"],
+        "Tekirdağ": ["Tekirdağ Namık Kemal Üniversitesi"],
+        "Tokat": ["Tokat Gaziosmanpaşa Üniversitesi"],
+        "Trabzon": ["Karadeniz Teknik Üniversitesi", "Trabzon Üniversitesi", "Avrasya Üniversitesi"],
+        "Tunceli": ["Munzur Üniversitesi"],
+        "Uşak": ["Uşak Üniversitesi"],
+        "Van": ["Van Yüzüncü Yıl Üniversitesi"],
+        "Yalova": ["Yalova Üniversitesi"],
+        "Yozgat": ["Yozgat Bozok Üniversitesi"],
+        "Zonguldak": ["Zonguldak Bülent Ecevit Üniversitesi"]
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const citySelect = document.getElementById("City");
+        const uniSelect = document.getElementById("University");
+
+        // Sort cities alphabetically
+        const cities = Object.keys(cityUniversities).sort((a, b) => a.localeCompare(b, 'tr'));
+
+        // Populate Cities
+        cities.forEach(city => {
+            let option = document.createElement("option");
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+
+        // Event Listener for City Change
+        citySelect.addEventListener("change", function() {
+            const selectedCity = this.value;
+            
+            // Clear current universities
+            uniSelect.innerHTML = '<option value="">' + (selectedCity ? 'Üniversite Seçiniz...' : 'Önce Şehir Seçiniz...') + '</option>';
+            
+            if (selectedCity && cityUniversities[selectedCity]) {
+                const universities = cityUniversities[selectedCity].sort((a, b) => a.localeCompare(b, 'tr'));
+                
+                universities.forEach(uni => {
+                    let option = document.createElement("option");
+                    option.value = uni;
+                    option.textContent = uni;
+                    uniSelect.appendChild(option);
+                });
+                
+                uniSelect.disabled = false;
+            } else {
+                uniSelect.disabled = true;
+            }
+        });
+    });
+</script>

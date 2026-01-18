@@ -1,0 +1,80 @@
+@model mvcFinal2.Models.Review
+
+@{
+    ViewData["Title"] = "İlanı Değerlendir";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white p-4 text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h3 class="mb-0 fw-bold">Değerlendirme Yap</h3>
+                    <p class="mb-0 text-white-50">@ViewBag.ListingTitle</p>
+                </div>
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <small class="text-muted text-uppercase fw-bold tracking-wider">Satıcı</small>
+                        <h5 class="fw-bold text-dark">@ViewBag.SellerName</h5>
+                    </div>
+
+                    <form asp-action="Create" method="post">
+                        <input type="hidden" asp-for="ListingId" />
+                        <input type="hidden" asp-for="ReviewedUserId" />
+                        
+                        <!-- Star Rating -->
+                        <div class="mb-4 text-center">
+                            <label class="form-label d-block fw-bold mb-2">Puanınız</label>
+                            <div class="star-rating d-inline-flex flex-row-reverse justify-content-center gap-1">
+                                <input type="radio" id="star5" name="Rating" value="5" class="d-none" required />
+                                <label for="star5" class="star fs-1 text-muted cursor-pointer transition-colors" title="5 Awesome"><i class="bi bi-star-fill"></i></label>
+                                
+                                <input type="radio" id="star4" name="Rating" value="4" class="d-none" />
+                                <label for="star4" class="star fs-1 text-muted cursor-pointer transition-colors" title="4 Great"><i class="bi bi-star-fill"></i></label>
+                                
+                                <input type="radio" id="star3" name="Rating" value="3" class="d-none" />
+                                <label for="star3" class="star fs-1 text-muted cursor-pointer transition-colors" title="3 Good"><i class="bi bi-star-fill"></i></label>
+                                
+                                <input type="radio" id="star2" name="Rating" value="2" class="d-none" />
+                                <label for="star2" class="star fs-1 text-muted cursor-pointer transition-colors" title="2 Fair"><i class="bi bi-star-fill"></i></label>
+                                
+                                <input type="radio" id="star1" name="Rating" value="1" class="d-none" />
+                                <label for="star1" class="star fs-1 text-muted cursor-pointer transition-colors" title="1 Poor"><i class="bi bi-star-fill"></i></label>
+                            </div>
+                            <span asp-validation-for="Rating" class="text-danger d-block mt-1"></span>
+                        </div>
+
+                        <!-- Comment -->
+                        <div class="mb-4">
+                            <label asp-for="Comment" class="form-label fw-bold">Yorumunuz</label>
+                            <textarea asp-for="Comment" class="form-control bg-light border-0 p-3" rows="4" placeholder="Deneyimlerinizi paylaşın..." style="resize: none;"></textarea>
+                            <span asp-validation-for="Comment" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                                Değerlendirmeyi Gönder
+                            </button>
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-pill fw-bold border-0">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #ffc107 !important; /* Bootstrap warning color (yellow) */
+    }
+    .transition-colors {
+        transition: color 0.2s ease;
+    }
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

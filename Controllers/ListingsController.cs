@@ -141,6 +141,7 @@ namespace mvcFinal2.Controllers
             // Update Listing Status
             listing.IsCompleted = true;
             listing.CompletedType = listing.Type == "Room" ? ListingCompletionType.Rented : ListingCompletionType.Sold;
+            listing.BuyerId = currentUserId;
             
             _context.Listings.Update(listing);
 

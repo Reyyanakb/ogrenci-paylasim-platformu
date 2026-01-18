@@ -24,6 +24,9 @@
             <a href="/Dashboard/Favorites" class="list-group-item list-group-item-action border-0 py-3 @(Model.ActivePage == "Favorites" ? "active-link" : "")" style="@(Model.ActivePage == "Favorites" ? "background-color: var(--primary-color); color: black; font-weight: 600;" : "")">
                 <i class="bi bi-heart me-2"></i> Favorilerim
             </a>
+            <a href="/Dashboard/Purchases" class="list-group-item list-group-item-action border-0 py-3 @(Model.ActivePage == "Purchases" ? "active-link" : "")" style="@(Model.ActivePage == "Purchases" ? "background-color: var(--primary-color); color: black; font-weight: 600;" : "")">
+                <i class="bi bi-bag-check me-2"></i> Satın Aldıklarım
+            </a>
             <a href="/Dashboard/Messages" class="list-group-item list-group-item-action border-0 py-3 @(Model.ActivePage == "Messages" ? "active-link" : "")" style="@(Model.ActivePage == "Messages" ? "background-color: var(--primary-color); color: black; font-weight: 600;" : "")">
                 <i class="bi bi-chat-dots me-2"></i> Mesajlarım 
                 @if(Model.UnreadMessageCount > 0)

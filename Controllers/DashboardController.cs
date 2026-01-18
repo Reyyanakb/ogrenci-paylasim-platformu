@@ -286,7 +286,10 @@ namespace mvcFinal2.Controllers
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdStr, out int userId))
             {
-                var user = await _context.Users.FindAsync(userId);
+                var user = await _context.Users
+                    .Include(u => u.ReviewsReceived)
+                        .ThenInclude(r => r.Reviewer)
+                    .FirstOrDefaultAsync(u => u.Id == userId);
                 var userListings = await _context.Listings
                     .Where(l => l.UserId == userId)
                     .OrderByDescending(l => l.CreatedAt)
@@ -299,7 +302,8 @@ namespace mvcFinal2.Controllers
                     UnreadMessageCount = await GetUnreadCount(userId),
                     FavoritesCount = await GetFavoritesCount(userId),
 
-                    ActivePage = "Index"
+                    ActivePage = "Index",
+                    CurrentUserId = userId
                 };
                 return View(viewModel);
             }
@@ -332,6 +336,31 @@ namespace mvcFinal2.Controllers
                 return View(viewModel);
             }
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Purchases()
+        {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdStr, out int userId))
+            {
+                var user = await _context.Users.FindAsync(userId);
+                
+                var purchases = await _context.Listings
+                    .Where(l => l.BuyerId == userId)
+                    .Include(l => l.User)
+                    .ToListAsync();
+                
+                var viewModel = new DashboardViewModel
+                {
+                    User = user,
+                    Purchases = purchases,
+                    UnreadMessageCount = await GetUnreadCount(userId),
+                    FavoritesCount = await GetFavoritesCount(userId),
+                    ActivePage = "Purchases"
+                };
+                return View(viewModel);
+            }
+             return RedirectToAction("Index");
         }
 
         [HttpPost]

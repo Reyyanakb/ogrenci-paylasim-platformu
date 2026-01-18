@@ -1,0 +1,80 @@
+@model mvcFinal2.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Satın Aldıklarım / Kiraladıklarım";
+}
+
+<div class="container section-padding">
+    <div class="row">
+        <!-- Sidebar Menu -->
+        <partial name="_DashboardSidebar" model="Model" />
+
+        <!-- Main Content Area -->
+        <div class="col-md-9">
+             <div class="card-custom p-4 mb-4">
+                 <h4 class="fw-bold mb-4">Satın Aldıklarım / Kiraladıklarım</h4>
+                 
+                 @if (!Model.Purchases.Any())
+                 {
+                     <div class="text-center py-5">
+                         <div class="mb-3">
+                             <i class="bi bi-bag-x display-1 text-muted"></i>
+                         </div>
+                         <h5 class="text-muted">Henüz bir işlem yapmadınız.</h5>
+                         <a href="/" class="btn btn-primary-custom mt-3">İlanları Keşfet</a>
+                     </div>
+                 }
+                 else
+                 {
+                     <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>İlan</th>
+                                    <th>Satıcı</th>
+                                    <th>Fiyat</th>
+                                    <th>Tarih</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Purchases)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="@item.ImageUrl" class="rounded me-2" alt="" style="width: 50px; height: 50px; object-fit: cover;">
+                                                <div>
+                                                    <a href="/Listings/Details/@item.Id" class="fw-bold text-dark text-decoration-none">@item.Title</a>
+                                                    <div class="small text-muted">@item.Location</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @if(item.User != null) {
+                                                <div class="d-flex align-items-center">
+                                                    <span class="fw-semibold">@item.User.FullName</span>
+                                                </div>
+                                            } else {
+                                                <span class="text-muted">Bilinmiyor</span>
+                                            }
+                                        </td>
+                                        <td>₺@item.Price.ToString("N0")</td>
+                                        <td>@item.CreatedAt.ToString("dd MMM yyyy")</td>
+                                        <td>
+                                            <!-- Review Button -->
+                                            <!-- We should check if already reviewed. For now, the controller handles it, but better UX to disable/hide -->
+                                            <a asp-controller="Reviews" asp-action="Create" asp-route-listingId="@item.Id" class="btn btn-sm btn-outline-primary rounded-pill">
+                                                <i class="bi bi-star me-1"></i> Değerlendir
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                     </div>
+                 }
+             </div>
+        </div>
+    </div>
+</div>

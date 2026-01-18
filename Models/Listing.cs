@@ -38,6 +38,10 @@ namespace mvcFinal2.Models
         
         [ForeignKey("UserId")]
         public AppUser? User { get; set; }
+
+        public int? BuyerId { get; set; }
+        [ForeignKey("BuyerId")]
+        public AppUser? Buyer { get; set; }
     }
 
     public enum ListingCompletionType

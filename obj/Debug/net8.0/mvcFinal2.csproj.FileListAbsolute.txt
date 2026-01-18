@@ -126,3 +126,4 @@ C:\mvcFinal2\obj\Debug\net8.0\refint\mvcFinal2.dll
 C:\mvcFinal2\obj\Debug\net8.0\mvcFinal2.pdb
 C:\mvcFinal2\obj\Debug\net8.0\mvcFinal2.genruntimeconfig.cache
 C:\mvcFinal2\obj\Debug\net8.0\ref\mvcFinal2.dll
+C:\mvcFinal2\obj\Debug\net8.0\mvcFinal2.sourcelink.json

@@ -1,0 +1,113 @@
+/* Background & Theme Variables */
+:root {
+    --bg-gradient-color-1: #FFC107;
+    /* Mustard */
+    --bg-gradient-color-2: #3E2723;
+    /* Dark Brown */
+    --bg-gradient-color-3: #121212;
+    /* Dark/Black */
+    --bg-gradient-color-4: #FFFDE7;
+    /* Cream */
+}
+
+[data-theme="dark"] {
+    --primary-color: #FFC107;
+    --primary-hover: #E0A800;
+    --secondary-color: #0d1b2a;
+    /* Navy Blue (Lacivert) */
+    --text-dark: #FDFBF7;
+    --text-muted: #B0BEC5;
+    --white: #1b263b;
+    /* Lighter Navy for cards */
+    --light-gray: #415a77;
+    /* Slate Blue for borders/accents */
+    --card-bg: #1b263b;
+    /* Lighter Navy */
+    --navbar-bg: rgba(13, 27, 42, 0.95);
+    /* Navy with opacity */
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.6);
+    --bg-gradient-color-4: #1b263b;
+}
+
+/* Update regular styles to use new generic variables if not already present */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card-custom {
+    background: var(--white);
+    /* Will map to --card-bg in dark mode effectively if updated */
+    border-color: var(--border-color, rgba(0, 0, 0, 0.03));
+}
+
+[data-theme="dark"] .card-custom {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .navbar-custom {
+    background-color: var(--navbar-bg);
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .navbar-brand,
+[data-theme="dark"] .nav-link {
+    color: var(--text-dark) !important;
+}
+
+[data-theme="dark"] .text-dark {
+    color: var(--text-dark) !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: #1b263b !important;
+}
+
+[data-theme="dark"] .table-light {
+    --bs-table-bg: #1b263b;
+    --bs-table-color: var(--text-dark);
+}
+
+/* Dark Mode Background for Body (Replacing Fluid BG) */
+[data-theme="dark"] body {
+    background-color: var(--secondary-color);
+    /* Navy Bg */
+}
+
+/* Adjust Hero for Dark Mode - Optional: Add overlay or change opacity if needed */
+[data-theme="dark"] .hero-section::before {
+    background: linear-gradient(180deg,
+            rgba(13, 27, 42, 0.6) 0%,
+            rgba(13, 27, 42, 0.4) 60%,
+            rgba(13, 27, 42, 0.95) 100%);
+}
+
+/* Text glow for readability on dark animated background */
+.hero-title,
+.hero-subtitle {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .hero-title,
+[data-theme="dark"] .hero-subtitle {
+    color: #FFF !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    transform: rotate(15deg);
+    color: var(--primary-color);
+}

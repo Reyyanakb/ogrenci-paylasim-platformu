@@ -19,6 +19,6 @@ namespace mvcFinal2.ViewModels
         public List<Listing> Favorites { get; set; } = new List<Listing>();
         public int FavoritesCount { get; set; }
 
-
+        public List<Listing> Purchases { get; set; } = new List<Listing>();
     }
 }

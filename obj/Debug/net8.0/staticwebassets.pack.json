@@ -5,8 +5,16 @@
       "PackagePath": "staticwebassets\\mvcFinal2.bundle.scp.css"
     },
     {
+      "Id": "C:\\mvcFinal2\\wwwroot\\css\\modern-design.css",
+      "PackagePath": "staticwebassets\\css\\modern-design.css"
+    },
+    {
       "Id": "C:\\mvcFinal2\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\mvcFinal2\\wwwroot\\css\\theme.css",
+      "PackagePath": "staticwebassets\\css\\theme.css"
     },
     {
       "Id": "C:\\mvcFinal2\\wwwroot\\favicon.ico",
@@ -29,8 +37,24 @@
       "PackagePath": "staticwebassets\\images\\hero_bg_new.png"
     },
     {
+      "Id": "C:\\mvcFinal2\\wwwroot\\images\\login-character.jpg",
+      "PackagePath": "staticwebassets\\images\\login-character.jpg"
+    },
+    {
+      "Id": "C:\\mvcFinal2\\wwwroot\\images\\login-character.png",
+      "PackagePath": "staticwebassets\\images\\login-character.png"
+    },
+    {
+      "Id": "C:\\mvcFinal2\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
       "Id": "C:\\mvcFinal2\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\mvcFinal2\\wwwroot\\js\\theme-effects.js",
+      "PackagePath": "staticwebassets\\js\\theme-effects.js"
     },
     {
       "Id": "C:\\mvcFinal2\\wwwroot\\lib\\bootstrap\\LICENSE",
@@ -259,6 +283,10 @@
     {
       "Id": "C:\\mvcFinal2\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\mvcFinal2\\wwwroot\\uploads\\02c5a5ea-26df-4803-bc53-1edb99035f97_unnamed.jpg",
+      "PackagePath": "staticwebassets\\uploads\\02c5a5ea-26df-4803-bc53-1edb99035f97_unnamed.jpg"
     },
     {
       "Id": "C:\\mvcFinal2\\wwwroot\\uploads\\07c7ba2b-bade-4b19-9849-b87da74e8156_ChatGPT Image 4 Oca 2026 15_08_59.png",

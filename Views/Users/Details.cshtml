@@ -23,6 +23,16 @@
                         }
                     </div>
                     <h2 class="fw-bold mb-1">@Model.FullName</h2>
+                    
+                    <!-- Clickable Rating Badge -->
+                    <a href="#reviews-section" class="text-decoration-none" title="Değerlendirmeleri Gör">
+                        <div class="d-inline-flex align-items-center gap-1 mb-2 mt-1 px-3 py-1 rounded-pill bg-light border transition-hover">
+                            <span class="fw-bold text-dark">@Model.AverageRating.ToString("0.0")</span>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <span class="text-muted small ms-1">(@Model.ReviewCount değerlendirme)</span>
+                        </div>
+                    </a>
+
                     <p class="text-muted fs-5">@(Model.University ?? "-")</p>
                     
                     <div class="d-flex justify-content-center gap-3 mt-3">
@@ -64,6 +74,75 @@
                                  </div>
                              </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="row mt-5" id="reviews-section">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center mb-4 ps-1 border-start border-4 border-warning">
+                            <h5 class="fw-bold mb-0 me-3">&nbsp;Değerlendirmeler</h5>
+                            <div class="d-flex align-items-center text-warning fs-5">
+                                <span class="fw-bold text-dark me-2">@Model.AverageRating.ToString("0.0")</span>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= Math.Round(Model.AverageRating))
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star text-muted op-25"></i>
+                                    }
+                                }
+                                <span class="text-muted small ms-2 fs-6">(@Model.ReviewCount)</span>
+                            </div>
+                        </div>
+
+                        @if (Model.ReviewsReceived != null && Model.ReviewsReceived.Any())
+                        {
+                            <div class="list-group list-group-flush">
+                                @foreach (var review in Model.ReviewsReceived.OrderByDescending(r => r.CreatedAt))
+                                {
+                                    <div class="list-group-item border-0 bg-light rounded-3 mb-3 p-3">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                 @if (review.Reviewer?.ProfileImage != null && review.Reviewer.ProfileImage.Length > 0)
+                                                {
+                                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(review.Reviewer.ProfileImage)" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                                }
+                                                else
+                                                {
+                                                     <img src="https://via.placeholder.com/32" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                                }
+                                                <span class="fw-bold small">@(review.Reviewer?.FullName ?? "Anonim")</span>
+                                                <small class="text-muted ms-2">@review.CreatedAt.ToString("dd MMM yyyy")</small>
+                                            </div>
+                                            <div class="text-warning small">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (i <= review.Rating)
+                                                    {
+                                                        <i class="bi bi-star-fill"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="bi bi-star text-secondary"></i>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <p class="mb-0 text-muted small">@review.Comment</p>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-light text-center border-0 small text-muted">
+                                Henüz değerlendirme yapılmamış.
+                            </div>
+                        }
                     </div>
                 </div>
 

@@ -14,6 +14,7 @@ namespace mvcFinal2.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,7 +37,24 @@ namespace mvcFinal2.Data
                 .HasIndex(f => new { f.UserId, f.ListingId })
                 .IsUnique();
 
+            // Review configuration
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Reviewer)
+                .WithMany()
+                .HasForeignKey(r => r.ReviewerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.ReviewedUser)
+                .WithMany(u => u.ReviewsReceived)
+                .HasForeignKey(r => r.ReviewedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<Listing>()
+                .HasOne(l => l.Buyer)
+                .WithMany(u => u.Purchases)
+                .HasForeignKey(l => l.BuyerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

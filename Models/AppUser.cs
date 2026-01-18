@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace mvcFinal2.Models
 {
@@ -32,5 +33,14 @@ namespace mvcFinal2.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         
         public ICollection<Listing> Listings { get; set; } = new List<Listing>();
+        
+        [InverseProperty("Buyer")]
+        public ICollection<Listing> Purchases { get; set; } = new List<Listing>();
+
+        [InverseProperty("ReviewedUser")]
+        public ICollection<Review> ReviewsReceived { get; set; } = new List<Review>();
+
+        public double AverageRating { get; set; } = 0;
+        public int ReviewCount { get; set; } = 0;
     }
 }
